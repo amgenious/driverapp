@@ -1,5 +1,6 @@
 import 'package:driver_app/pages/mainscreens/bookingspage.dart';
 import 'package:driver_app/pages/mainscreens/homepage.dart';
+import 'package:driver_app/pages/mainscreens/triphistorypage.dart';
 import 'package:flutter/material.dart';
 
 class WrapperPage extends StatefulWidget {
@@ -14,8 +15,9 @@ class _WrapperPageState extends State<WrapperPage> {
   List<Widget> pages = const [
     HomePage(),
     BookingsPage(),
+    TripsHistoryPage(),
   ];
-  List<String> pageTitles = const ['Home','Bookings'];
+  List<String> pageTitles = const ['Home','Bookings','Trip History'];
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -38,6 +40,10 @@ class _WrapperPageState extends State<WrapperPage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_month),
             label: 'Bookings',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history),
+            label: 'Trip History',
           ),
         ],
         currentIndex: _selectedIndex,

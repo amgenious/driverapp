@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print, unused_import, unrelated_type_equality_checks, use_build_context_synchronously
 
+import 'package:driver_app/pages/mainscreens/endtrippage.dart';
 import 'package:driver_app/pages/mainscreens/goonline.dart';
 import 'package:driver_app/pages/mainscreens/tripspage.dart';
 import 'package:driver_app/utilis/constant.dart';
@@ -27,7 +28,8 @@ class _GetProfilePageState extends State<GetProfilePage> {
   late String routes;
   late String busValue;
   late String drivervalue;
-  late int noofpassengers;
+  late String noofpassengers;
+  late String tripid;
 
   @override
   void initState() {
@@ -45,6 +47,16 @@ class _GetProfilePageState extends State<GetProfilePage> {
               textAlign: TextAlign.center,
             ),
             children: [GoOnlinePage(routeid: routes)],
+          );
+        })) {}
+  }
+
+  Future<void> endTripDialog() async {
+    switch (await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+            children: [EndTripPage(routeid: routes, tripid: tripid)],
           );
         })) {}
   }
@@ -133,6 +145,7 @@ class _GetProfilePageState extends State<GetProfilePage> {
         pro = [driversData];
       });
       print(pro);
+      tripid = pro![0]['CurrentTrip'];
       if (driversData != null && driversData.containsKey('Bus')) {
         busValue = driversData['Bus'];
         drivervalue = driversData['DocRefID'];
@@ -156,7 +169,7 @@ class _GetProfilePageState extends State<GetProfilePage> {
               var diff = driverNameResponse['Data'][0];
               if (diff != null && diff['Routes'] != null) {
                 routes = diff['Routes'].join(', ');
-                noofpassengers = diff['NumberOfPassengers'];
+                noofpassengers = diff['NumberOfPassengers'].toString();
               }
             });
           } else {
@@ -169,6 +182,9 @@ class _GetProfilePageState extends State<GetProfilePage> {
         _isLoading = false;
       });
     } else {
+      setState(() {
+        _isLoading = false;
+      });
       throw Exception('Failed to load data');
     }
   }
@@ -283,7 +299,7 @@ class _GetProfilePageState extends State<GetProfilePage> {
             GestureDetector(
               onTap: () {
                 if (pro != null && pro!.isNotEmpty) {
-                  if (pro![0]['Status'].toString() != 'offline') {
+                  if (pro![0]['OnTrip'].toString() != 'true') {
                     showModalBottomSheet(
                       context: context,
                       builder: (BuildContext context) {
@@ -302,6 +318,8 @@ class _GetProfilePageState extends State<GetProfilePage> {
                         );
                       },
                     );
+                  } else {
+                    endTripDialog();
                   }
                 }
               },
@@ -310,17 +328,17 @@ class _GetProfilePageState extends State<GetProfilePage> {
                   Icon(
                     pro != null &&
                             pro!.isNotEmpty &&
-                            pro![0]['Status'].toString() != 'offline'
+                            pro![0]['OnTrip'].toString() != 'true'
                         ? Icons.track_changes
-                        : null,
+                        : Icons.disabled_by_default,
                     color: Colors.amber,
                   ),
                   Text(
                     pro != null &&
                             pro!.isNotEmpty &&
-                            pro![0]['Status'].toString() != 'offline'
+                            pro![0]['OnTrip'].toString() != 'true'
                         ? 'Start Trip'
-                        : '',
+                        : 'End Trip',
                     style: const TextStyle(fontSize: 10),
                   ),
                 ],

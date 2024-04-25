@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, avoid_print, use_build_context_synchronously
+// ignore_for_file: avoid_print, use_build_context_synchronously, unused_import
 
 import 'package:driver_app/wrapper/wrapper.dart';
 import 'package:flutter/material.dart';
@@ -7,39 +7,32 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
-class TripsPage extends StatefulWidget {
-  final String busid;
-  final String driverid;
+class EndTripPage extends StatefulWidget {
   final String routeid;
-  const TripsPage(
-      {super.key,
-      required this.busid,
-      required this.driverid,
-      required this.routeid});
+  final String tripid;
+  const EndTripPage({super.key, required this.routeid, required this.tripid});
 
   @override
-  State<TripsPage> createState() => _TripsPageState();
+  State<EndTripPage> createState() => _EndTripPageState();
 }
 
-class _TripsPageState extends State<TripsPage> {
+class _EndTripPageState extends State<EndTripPage> {
   List<Map<String, dynamic>>? drivt;
   List<dynamic>? driv;
   bool _isLoading = true;
-  late String busid;
-  late String driverid;
   late String routeid;
-  String? selectedStartPoint;
-  String? sname;
+  late String tripid;
+  String? selectedEndPoint;
+  String? dname;
   String? routes;
-  double? slongitude;
-  double? slatitude;
+  double? dlongitude;
+  double? dlatitude;
 
   @override
   void initState() {
     super.initState();
     routeid = widget.routeid;
-    busid = widget.busid;
-    driverid = widget.driverid;
+    tripid = widget.tripid;
     fetchData();
   }
 
@@ -70,37 +63,35 @@ class _TripsPageState extends State<TripsPage> {
     }
   }
 
-  Future<void> _startTrip() async {
-    if (selectedStartPoint == null) {
+  Future<void> _endTrip() async {
+    if (selectedEndPoint == null) {
       print('Please fill in all required fields.');
       return;
     } else {
-      List<String> parts = selectedStartPoint!.split(';');
-      sname = parts[0];
-      slatitude = double.parse(parts[1]);
-      slongitude = double.parse(parts[2]);
+      List<String> parts = selectedEndPoint!.split(';');
+      dname = parts[0];
+      dlatitude = double.parse(parts[1]);
+      dlongitude = double.parse(parts[2]);
       routes = parts[3];
     }
 
-    Map<String, dynamic> startTripData = {
-      "driverID": driverid,
-      "busID": busid,
-      "initial_location": {
-        "name": sname,
+    Map<String, dynamic> endTripData = {
+      "last_location": {
+        "name": dname,
         "geolocation": {
-          "longitude": slongitude,
-          "latitude": slatitude,
+          "longitude": dlongitude,
+          "latitude": dlatitude,
         },
       },
     };
-    await tripStart(startTripData);
+    await tripEnd(endTripData);
   }
 
-  Future<void> tripStart(Map<String, dynamic> startTripData) async {
+  Future<void> tripEnd(Map<String, dynamic> endTripData) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var token = preferences.getString('token');
-    const String apiUrl =
-        'https://staging-bustransit-api-sfw2.encr.app/api/start/trip';
+    String apiUrl =
+        'https://staging-bustransit-api-sfw2.encr.app/api/end/trip/$tripid';
     final String? accessToken = token;
     showDialog(
         context: context,
@@ -110,20 +101,21 @@ class _TripsPageState extends State<TripsPage> {
             ));
     try {
       print("try has started");
-      final http.Response response = await http.post(
+      final http.Response response = await http.patch(
         Uri.parse(apiUrl),
         headers: {
           'Authorization': 'Bearer $accessToken',
           'Content-Type': 'application/json',
         },
-        body: jsonEncode(startTripData),
+        body: jsonEncode(endTripData),
       );
-
+      print("This is the response below");
+      print(response.body);
       if (response.statusCode == 200) {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Trip Started Successful'),
+            content: Text('Trip Ended Successful'),
           ),
         );
         Navigator.push(
@@ -133,9 +125,8 @@ class _TripsPageState extends State<TripsPage> {
       } else if (response.statusCode == 400) {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-                'Trip Not Started, Check if passengers numbers are not zero'),
+          SnackBar(
+            content: Text('Trip Not Ended: ${response.body}'),
           ),
         );
         Navigator.pop(context);
@@ -168,7 +159,7 @@ class _TripsPageState extends State<TripsPage> {
             height: 5,
           ),
           const Text(
-            "Start Trip",
+            "End Trip",
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(
@@ -182,10 +173,10 @@ class _TripsPageState extends State<TripsPage> {
                       child: Column(
                     children: [
                       DropdownButtonFormField<String>(
-                        value: selectedStartPoint,
+                        value: selectedEndPoint,
                         onChanged: (String? newValue) {
                           setState(() {
-                            selectedStartPoint = newValue;
+                            selectedEndPoint = newValue;
                           });
                         },
                         items: (driv![0]['Route'] as List)
@@ -204,7 +195,7 @@ class _TripsPageState extends State<TripsPage> {
                           );
                         }).toList(),
                         decoration: const InputDecoration(
-                            labelText: 'Select Start Point'),
+                            labelText: 'Select End Point'),
                       ),
                       const SizedBox(
                         height: 10,
@@ -220,10 +211,10 @@ class _TripsPageState extends State<TripsPage> {
                                     backgroundColor: MaterialStatePropertyAll(
                                         Colors.amberAccent)),
                                 onPressed: () async {
-                                  await _startTrip();
+                                  await _endTrip();
                                 },
                                 child: const Text(
-                                  "Start Trip",
+                                  "End Trip",
                                   style: TextStyle(
                                       fontSize: 15, color: Colors.white),
                                 )),
