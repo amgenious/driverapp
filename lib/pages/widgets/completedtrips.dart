@@ -87,13 +87,14 @@ class _CompletedTripsState extends State<CompletedTrips> {
                             child: Column(
                               children: [
                                 ListTile(
+                                  contentPadding: const EdgeInsets.all(15),
                                   textColor: Colors.black,
                                   iconColor: Colors.black,
                                   leading: Text(
                                     'From: ${completedTrips[index]['initial_location']['name']} to ${completedTrips[index]['last_location']['name']}',
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 15),
+                                        fontSize: 18),
                                   ),
                                   trailing: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,

@@ -200,11 +200,11 @@ class _GetProfilePageState extends State<GetProfilePage> {
               children: [
                 Text(
                   'Seats Booked: ${driv?[0]['NumberOfPassengers'].toString()}',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 18),
                 ),
                 Text(
                   'Seats Available: ${driv?[0]['Seats'] - driv?[0]['NumberOfPassengers']}',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 18),
                 ),
               ],
             ),
@@ -231,7 +231,7 @@ class _GetProfilePageState extends State<GetProfilePage> {
                         child: Text(
                           "${pro?[0]['FirstName'].toString().substring(0, 1)}${pro?[0]['LastName'].toString().substring(0, 1)}",
                           style: const TextStyle(
-                              fontSize: 20,
+                              fontSize: 30,
                               color: Colors.black,
                               fontWeight: FontWeight.bold),
                         ),
@@ -242,11 +242,11 @@ class _GetProfilePageState extends State<GetProfilePage> {
                           Text(
                             "${pro?[0]['FirstName'].toString()} ${pro?[0]['LastName'].toString()}",
                             style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 14),
+                                fontWeight: FontWeight.bold, fontSize: 20),
                           ),
                           Text(
                             "${pro?[0]['Email'].toString()}",
-                            style: const TextStyle(fontSize: 10),
+                            style: const TextStyle(fontSize: 15),
                           )
                         ],
                       ),
@@ -276,6 +276,7 @@ class _GetProfilePageState extends State<GetProfilePage> {
                                   ? Icons.location_disabled
                                   : Icons.online_prediction,
                               color: Colors.white,
+                              size: 30,
                             ),
                             Text(
                               pro != null &&
@@ -296,54 +297,60 @@ class _GetProfilePageState extends State<GetProfilePage> {
             const SizedBox(
               height: 50,
             ),
-            GestureDetector(
-              onTap: () {
-                if (pro != null && pro!.isNotEmpty) {
-                  if (pro![0]['OnTrip'].toString() != 'true') {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return SizedBox(
-                          child: Center(
-                            child: ListView(
-                              children: [
-                                TripsPage(
-                                  busid: busValue,
-                                  driverid: drivervalue,
-                                  routeid: routes,
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  } else {
-                    endTripDialog();
-                  }
-                }
-              },
-              child: Column(
-                children: [
-                  Icon(
-                    pro != null &&
-                            pro!.isNotEmpty &&
-                            pro![0]['OnTrip'].toString() != 'true'
-                        ? Icons.track_changes
-                        : Icons.disabled_by_default,
-                    color: Colors.amber,
+            Visibility(
+  visible: pro != null &&
+      pro!.isNotEmpty &&
+      pro![0]['Status'].toString() != 'offline',
+  child: GestureDetector(
+    onTap: () {
+      if (pro != null && pro!.isNotEmpty) {
+        if (pro![0]['OnTrip'].toString() != 'true') {
+          showModalBottomSheet(
+            context: context,
+            builder: (BuildContext context) {
+              return SizedBox(
+                child: Center(
+                  child: ListView(
+                    children: [
+                      TripsPage(
+                        busid: busValue,
+                        driverid: drivervalue,
+                        routeid: routes,
+                      ),
+                    ],
                   ),
-                  Text(
-                    pro != null &&
-                            pro!.isNotEmpty &&
-                            pro![0]['OnTrip'].toString() != 'true'
-                        ? 'Start Trip'
-                        : 'End Trip',
-                    style: const TextStyle(fontSize: 10),
-                  ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
+          );
+        } else {
+          endTripDialog();
+        }
+      }
+    },
+    child: Column(
+      children: [
+        Icon(
+          pro != null &&
+                  pro!.isNotEmpty &&
+                  pro![0]['OnTrip'].toString() != 'true'
+              ? Icons.track_changes
+              : Icons.disabled_by_default,
+          color: Colors.amber,
+          size: 30,
+        ),
+        Text(
+          pro != null &&
+                  pro!.isNotEmpty &&
+                  pro![0]['OnTrip'].toString() != 'true'
+              ? 'Start Trip'
+              : 'End Trip',
+          style: const TextStyle(fontSize: 10),
+        ),
+      ],
+    ),
+  ),
+),
           ]);
   }
 }

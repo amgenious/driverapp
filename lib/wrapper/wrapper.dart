@@ -29,6 +29,7 @@ class _WrapperPageState extends State<WrapperPage> {
     return Scaffold(
        body: pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
+        iconSize: 30,
         unselectedItemColor: const Color.fromARGB(255, 161, 161, 161),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

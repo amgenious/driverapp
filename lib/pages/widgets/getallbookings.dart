@@ -95,6 +95,7 @@ class _GetAllBookingsState extends State<GetAllBookings> {
                       child: Column(
                         children: [
                           ListTile(
+                            contentPadding: const EdgeInsets.all(20),
                             leading: Container(
                                 alignment: Alignment.center,
                                 width: 50,
@@ -110,13 +111,13 @@ class _GetAllBookingsState extends State<GetAllBookings> {
                                       drivt![index]['FirstName']
                                           .toString()
                                           .substring(0, 1),
-                                      style: const TextStyle(fontSize: 20),
+                                      style: const TextStyle(fontSize: 25),
                                     ),
                                     Text(
                                       drivt![index]['LastName']
                                           .toString()
                                           .substring(0, 1),
-                                      style: const TextStyle(fontSize: 20),
+                                      style: const TextStyle(fontSize: 25),
                                     )
                                   ],
                                 )),
@@ -125,7 +126,7 @@ class _GetAllBookingsState extends State<GetAllBookings> {
                               children: [
                                 Text(
                                   '${drivt![index]['FirstName']} ${drivt![index]['LastName']}',
-                                  textAlign: TextAlign.center,style: const TextStyle(fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.center,style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
                                 ),
                                 if (driv != null)
                                   ...driv!.map((passenger) {
@@ -141,9 +142,9 @@ class _GetAllBookingsState extends State<GetAllBookings> {
                                           Text(
                                             'Pick Up: ${driv![index]['PickUpPoint']['Name']}',
                                             style:
-                                                const TextStyle(fontSize: 10),
+                                                const TextStyle(fontSize: 13),
                                           ),
-                                          Text('Destinaiton: ${driv![index]['Destination']['Name']}',style: const TextStyle(fontSize: 10),),
+                                          Text('Destinaiton: ${driv![index]['Destination']['Name']}',style: const TextStyle(fontSize: 13),),
                                         ],
                                       );
                                     }
@@ -163,7 +164,7 @@ class _GetAllBookingsState extends State<GetAllBookings> {
                                         driv![index]['PasengerID'].toString();
                                     if (doref == pass) {
                                       return Text(
-                                          'Seat Booked: ${driv![index]['Passengers']}', style: const TextStyle(fontSize: 10),);
+                                          'Seat Booked: ${driv![index]['Passengers']}', style: const TextStyle(fontSize: 12),);
                                     }
                                     return const Text("NO");
                                   })
