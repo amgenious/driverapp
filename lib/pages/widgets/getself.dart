@@ -191,6 +191,7 @@ class _GetProfilePageState extends State<GetProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    String thumbnailUrl = pro![0]['Thumbnail']['URL'];
     var size = MediaQuery.of(context).size;
     return _isLoading
         ? const Center(child: CircularProgressIndicator())
@@ -221,7 +222,9 @@ class _GetProfilePageState extends State<GetProfilePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Container(
+                      Visibility(
+                        visible: thumbnailUrl.isNotEmpty,
+                      replacement: Container(
                         alignment: Alignment.center,
                         width: 80,
                         height: 80,
@@ -235,6 +238,11 @@ class _GetProfilePageState extends State<GetProfilePage> {
                               color: Colors.black,
                               fontWeight: FontWeight.bold),
                         ),
+                      ),
+                        child:  CircleAvatar(
+                        radius: 60,
+                        backgroundImage: NetworkImage(thumbnailUrl),
+                      ),
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.center,

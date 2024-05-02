@@ -55,7 +55,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           const LogoWidget(),
           ListTile(
             title: GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pushNamed('/profile');
+              },
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [

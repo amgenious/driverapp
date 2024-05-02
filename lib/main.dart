@@ -4,6 +4,7 @@ import 'package:driver_app/pages/authscreens/forgetpassword_page.dart';
 import 'package:driver_app/pages/authscreens/resetpassword_page.dart';
 import 'package:driver_app/pages/mainscreens/bookingspage.dart';
 import 'package:driver_app/pages/mainscreens/notificationpage.dart';
+import 'package:driver_app/pages/mainscreens/profilepage.dart';
 import 'package:driver_app/ui/privacyscreen.dart';
 import 'package:driver_app/ui/startscreen.dart';
 import 'package:driver_app/ui/supportscreen.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
         '/notifications':(context) => const NotificationsPage(),
         '/support':(context) => const SupportScreen(),
         '/privacy':(context) => const PrivacyScreen(),
+        '/profile':(context) => const ProfilePage()
       }
     );
   }
