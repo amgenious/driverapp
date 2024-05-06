@@ -18,6 +18,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   List<Map<String, dynamic>>? pro;
   bool _isLoading = true;
+  String? thumbnailUrl;
   late String drivervalue = '';
   @override
   void initState() {
@@ -55,7 +56,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    String thumbnailUrl = pro![0]['Thumbnail']['URL'];
+    thumbnailUrl = pro?[0]['Thumbnail']['URL'];
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -123,7 +124,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                      Visibility(
-                        visible: thumbnailUrl.isNotEmpty,
+                        visible: thumbnailUrl != null,
                       replacement: Container(
                         alignment: Alignment.center,
                         width: 80,
@@ -141,7 +142,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                         child:  CircleAvatar(
                         radius: 60,
-                        backgroundImage: NetworkImage(thumbnailUrl),
+                        backgroundImage: NetworkImage(thumbnailUrl ?? ''),
                       ),
                       ),
                       const SizedBox(
