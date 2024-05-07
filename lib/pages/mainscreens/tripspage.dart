@@ -109,7 +109,6 @@ class _TripsPageState extends State<TripsPage> {
               child: CircularProgressIndicator(),
             ));
     try {
-      print("try has started");
       final http.Response response = await http.post(
         Uri.parse(apiUrl),
         headers: {
@@ -143,6 +142,7 @@ class _TripsPageState extends State<TripsPage> {
         print('Response body: ${response.body}');
       }
     } catch (e) {
+      Navigator.pop(context);
       print('Error: $e');
     }
   }
