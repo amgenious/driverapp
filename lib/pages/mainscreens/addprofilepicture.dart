@@ -110,6 +110,7 @@ class _AddProfilePictureState extends State<AddProfilePicture> {
         print('Response body: ${response.body}');
       }
     } catch (e) {
+      Navigator.pop(context);
       print('Error: $e');
     }
   }

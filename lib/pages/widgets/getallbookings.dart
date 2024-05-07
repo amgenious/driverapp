@@ -15,6 +15,7 @@ class GetAllBookings extends StatefulWidget {
 
 class _GetAllBookingsState extends State<GetAllBookings> {
   bool _isLoading = true;
+  String? thumbnailUrl;
   List<Map<String, dynamic>>? pro;
   List<dynamic>? driv;
   List<Map<String, dynamic>> availablePassengers = [];
@@ -90,43 +91,55 @@ class _GetAllBookingsState extends State<GetAllBookings> {
                 child: ListView.builder(
                   itemCount: availablePassengers.length,
                   itemBuilder: (context, index) {
+                    thumbnailUrl = drivt?[index]['Thumbnail']['URL'];
                     return Card(
                       color: Colors.amber,
                       child: Column(
                         children: [
                           ListTile(
                             contentPadding: const EdgeInsets.all(20),
-                            leading: Container(
-                                alignment: Alignment.center,
-                                width: 50,
-                                height: 50,
-                                decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10))),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      drivt![index]['FirstName']
-                                          .toString()
-                                          .substring(0, 1),
-                                      style: const TextStyle(fontSize: 25),
-                                    ),
-                                    Text(
-                                      drivt![index]['LastName']
-                                          .toString()
-                                          .substring(0, 1),
-                                      style: const TextStyle(fontSize: 25),
-                                    )
-                                  ],
-                                )),
+                            leading: Visibility(
+                              visible: thumbnailUrl != null,
+                              replacement: Container(
+                                  alignment: Alignment.center,
+                                  width: 50,
+                                  height: 50,
+                                  decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10))),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        drivt![index]['FirstName']
+                                            .toString()
+                                            .substring(0, 1),
+                                        style: const TextStyle(fontSize: 25),
+                                      ),
+                                      Text(
+                                        drivt![index]['LastName']
+                                            .toString()
+                                            .substring(0, 1),
+                                        style: const TextStyle(fontSize: 25),
+                                      )
+                                    ],
+                                  )),
+                              child: CircleAvatar(
+                                radius: 30,
+                                backgroundImage:
+                                    NetworkImage(thumbnailUrl ?? " "),
+                              ),
+                            ),
                             title: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
                                   '${drivt![index]['FirstName']} ${drivt![index]['LastName']}',
-                                  textAlign: TextAlign.center,style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
                                 ),
                                 if (driv != null)
                                   ...driv!.map((passenger) {
@@ -144,7 +157,11 @@ class _GetAllBookingsState extends State<GetAllBookings> {
                                             style:
                                                 const TextStyle(fontSize: 13),
                                           ),
-                                          Text('Destinaiton: ${driv![index]['Destination']['Name']}',style: const TextStyle(fontSize: 13),),
+                                          Text(
+                                            'Destinaiton: ${driv![index]['Destination']['Name']}',
+                                            style:
+                                                const TextStyle(fontSize: 13),
+                                          ),
                                         ],
                                       );
                                     }
@@ -155,7 +172,10 @@ class _GetAllBookingsState extends State<GetAllBookings> {
                             trailing: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Icon(Icons.book, color: Colors.white,),
+                                const Icon(
+                                  Icons.book,
+                                  color: Colors.black,
+                                ),
                                 if (driv != null)
                                   ...driv!.map((passenger) {
                                     String doref =
@@ -164,10 +184,13 @@ class _GetAllBookingsState extends State<GetAllBookings> {
                                         driv![index]['PasengerID'].toString();
                                     if (doref == pass) {
                                       return Text(
-                                          'Seat Booked: ${driv![index]['Passengers']}', style: const TextStyle(fontSize: 12),);
+                                        'Seat Booked: ${driv![index]['Passengers']}',
+                                        style: const TextStyle(fontSize: 12),
+                                      );
                                     }
                                     return const Text("NO");
-                                  })
+                                  }),
+                                  Text('Status: ${driv![index]['Status']}', style: const TextStyle(fontSize: 10),)
                               ],
                             ),
                           )

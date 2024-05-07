@@ -23,6 +23,7 @@ class _GetProfilePageState extends State<GetProfilePage> {
   List<Map<String, dynamic>>? pro;
   List<dynamic>? driv;
   List<dynamic>? profile;
+  String? thumbnailUrl;
   bool _isLoading = true;
   // ignore: prefer_typing_uninitialized_variables
   late String routes;
@@ -191,7 +192,7 @@ class _GetProfilePageState extends State<GetProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    String thumbnailUrl = pro![0]['Thumbnail']['URL'];
+    thumbnailUrl = pro?[0]['Thumbnail']['URL'];
     var size = MediaQuery.of(context).size;
     return _isLoading
         ? const Center(child: CircularProgressIndicator())
@@ -201,11 +202,13 @@ class _GetProfilePageState extends State<GetProfilePage> {
               children: [
                 Text(
                   'Seats Booked: ${driv?[0]['NumberOfPassengers'].toString()}',
-                  style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 18),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 18),
                 ),
                 Text(
                   'Seats Available: ${driv?[0]['Seats'] - driv?[0]['NumberOfPassengers']}',
-                  style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 18),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 18),
                 ),
               ],
             ),
@@ -223,26 +226,26 @@ class _GetProfilePageState extends State<GetProfilePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Visibility(
-                        visible: thumbnailUrl.isNotEmpty,
-                      replacement: Container(
-                        alignment: Alignment.center,
-                        width: 80,
-                        height: 80,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Text(
-                          "${pro?[0]['FirstName'].toString().substring(0, 1)}${pro?[0]['LastName'].toString().substring(0, 1)}",
-                          style: const TextStyle(
-                              fontSize: 30,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold),
+                        visible: thumbnailUrl!.isNotEmpty,
+                        replacement: Container(
+                          alignment: Alignment.center,
+                          width: 80,
+                          height: 80,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Text(
+                            "${pro?[0]['FirstName'].toString().substring(0, 1)}${pro?[0]['LastName'].toString().substring(0, 1)}",
+                            style: const TextStyle(
+                                fontSize: 30,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
-                      ),
-                        child:  CircleAvatar(
-                        radius: 60,
-                        backgroundImage: NetworkImage(thumbnailUrl),
-                      ),
+                        child: CircleAvatar(
+                          radius: 60,
+                          backgroundImage: NetworkImage(thumbnailUrl ?? ""),
+                        ),
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -306,59 +309,59 @@ class _GetProfilePageState extends State<GetProfilePage> {
               height: 50,
             ),
             Visibility(
-  visible: pro != null &&
-      pro!.isNotEmpty &&
-      pro![0]['Status'].toString() != 'offline',
-  child: GestureDetector(
-    onTap: () {
-      if (pro != null && pro!.isNotEmpty) {
-        if (pro![0]['OnTrip'].toString() != 'true') {
-          showModalBottomSheet(
-            context: context,
-            builder: (BuildContext context) {
-              return SizedBox(
-                child: Center(
-                  child: ListView(
-                    children: [
-                      TripsPage(
-                        busid: busValue,
-                        driverid: drivervalue,
-                        routeid: routes,
-                      ),
-                    ],
-                  ),
+              visible: pro != null &&
+                  pro!.isNotEmpty &&
+                  pro![0]['Status'].toString() != 'offline',
+              child: GestureDetector(
+                onTap: () {
+                  if (pro != null && pro!.isNotEmpty) {
+                    if (pro![0]['OnTrip'].toString() != 'true') {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return SizedBox(
+                            child: Center(
+                              child: ListView(
+                                children: [
+                                  TripsPage(
+                                    busid: busValue,
+                                    driverid: drivervalue,
+                                    routeid: routes,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    } else {
+                      endTripDialog();
+                    }
+                  }
+                },
+                child: Column(
+                  children: [
+                    Icon(
+                      pro != null &&
+                              pro!.isNotEmpty &&
+                              pro![0]['OnTrip'].toString() != 'true'
+                          ? Icons.track_changes
+                          : Icons.disabled_by_default,
+                      color: Colors.amber,
+                      size: 30,
+                    ),
+                    Text(
+                      pro != null &&
+                              pro!.isNotEmpty &&
+                              pro![0]['OnTrip'].toString() != 'true'
+                          ? 'Start Trip'
+                          : 'End Trip',
+                      style: const TextStyle(fontSize: 10),
+                    ),
+                  ],
                 ),
-              );
-            },
-          );
-        } else {
-          endTripDialog();
-        }
-      }
-    },
-    child: Column(
-      children: [
-        Icon(
-          pro != null &&
-                  pro!.isNotEmpty &&
-                  pro![0]['OnTrip'].toString() != 'true'
-              ? Icons.track_changes
-              : Icons.disabled_by_default,
-          color: Colors.amber,
-          size: 30,
-        ),
-        Text(
-          pro != null &&
-                  pro!.isNotEmpty &&
-                  pro![0]['OnTrip'].toString() != 'true'
-              ? 'Start Trip'
-              : 'End Trip',
-          style: const TextStyle(fontSize: 10),
-        ),
-      ],
-    ),
-  ),
-),
+              ),
+            ),
           ]);
   }
 }

@@ -1,11 +1,12 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, deprecated_member_use
 
 import 'package:driver_app/pages/mainscreens/notificationpage.dart';
 import 'package:driver_app/pages/mainscreens/passengersgetoff.dart';
 import 'package:driver_app/pages/widgets/drawerwidgets.dart';
 import 'package:driver_app/pages/widgets/getself.dart';
+import 'package:driver_app/pages/widgets/acceptpassengerbookings.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -81,7 +82,42 @@ class _HomePageState extends State<HomePage> {
           },
           backgroundColor: Colors.amber,
           foregroundColor: Colors.white,
-          child: const Icon(Icons.park_sharp),
+          child: SvgPicture.asset(
+                    'assets/images/pd.svg',
+                    color: Colors.black,
+          ),
+          ),
+        )
+              ],
+            )
+          ],
+        ),
+         Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+        Container(
+          margin: const EdgeInsets.only(bottom: 60, right: 10),
+          child: FloatingActionButton.small(onPressed: (){
+              showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const SizedBox(
+                              child: Center(
+                                child: AcceptPassengerBookings(),
+                              ),
+                            );
+                          },
+                        );
+                        
+          },
+          backgroundColor: Colors.amber,
+          foregroundColor: Colors.white,
+          child: SvgPicture.asset(
+                  'assets/images/ps.svg',
+                ),
           ),
         )
               ],

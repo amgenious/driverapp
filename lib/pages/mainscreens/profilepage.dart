@@ -124,7 +124,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                      Visibility(
-                        visible: thumbnailUrl != null,
+                        visible: thumbnailUrl!.isNotEmpty,
                       replacement: Container(
                         alignment: Alignment.center,
                         width: 80,
