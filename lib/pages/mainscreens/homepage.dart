@@ -16,11 +16,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  
-
   @override
   Widget build(BuildContext context) {
-  var size = MediaQuery.of(context).size;
+    var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -44,12 +42,14 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       drawer: const DrawerWidget(),
-      body: Stack(
-        children: [
+      body: Stack(children: [
         Container(
           height: size.height,
           width: size.width,
-          decoration: const BoxDecoration(image: DecorationImage(image:AssetImage('assets/images/bg.png'), fit: BoxFit.cover)),
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('assets/images/bg.png'),
+                  fit: BoxFit.cover)),
         ),
         const Center(
           child: Column(
@@ -58,9 +58,7 @@ class _HomePageState extends State<HomePage> {
               Padding(
                 padding: EdgeInsets.all(10),
                 child: Column(
-                  children: [
-                    GetProfilePage()
-                  ],
+                  children: [GetProfilePage()],
                 ),
               ),
             ],
@@ -72,36 +70,39 @@ class _HomePageState extends State<HomePage> {
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-        Container(
-          margin: const EdgeInsets.all(10),
-          child: FloatingActionButton.small(onPressed: (){
-               Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const PassengersGettingOff()),
-        );
-          },
-          backgroundColor: Colors.amber,
-          foregroundColor: Colors.white,
-          child: SvgPicture.asset(
-                    'assets/images/pd.svg',
-                    color: Colors.black,
-          ),
-          ),
-        )
+                Container(
+                  margin: const EdgeInsets.all(10),
+                  child: FloatingActionButton.small(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const PassengersGettingOff()),
+                      );
+                    },
+                    backgroundColor: Colors.amber,
+                    foregroundColor: Colors.white,
+                    child: SvgPicture.asset(
+                      'assets/images/pd.svg',
+                      color: Colors.black,
+                    ),
+                  ),
+                )
               ],
             )
           ],
         ),
-         Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-        Container(
-          margin: const EdgeInsets.only(bottom: 60, right: 10),
-          child: FloatingActionButton.small(onPressed: (){
-              showModalBottomSheet(
+                Container(
+                  margin: const EdgeInsets.only(bottom: 60, right: 14),
+                  child: GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
                           context: context,
                           builder: (BuildContext context) {
                             return const SizedBox(
@@ -111,21 +112,25 @@ class _HomePageState extends State<HomePage> {
                             );
                           },
                         );
-                        
-          },
-          backgroundColor: Colors.amber,
-          foregroundColor: Colors.white,
-          child: SvgPicture.asset(
-                  'assets/images/ps.svg',
-                ),
-          ),
-        )
+                      },
+                      child: Container(
+                        width: 40,
+                        height: 40,
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          color: Colors.amber,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: SvgPicture.asset(
+                          'assets/images/ps.svg',
+                        ),
+                      )),
+                )
               ],
             )
           ],
         ),
-        ]
-      ),
+      ]),
     );
   }
 }

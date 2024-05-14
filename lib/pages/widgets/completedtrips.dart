@@ -73,7 +73,8 @@ class _CompletedTripsState extends State<CompletedTrips> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _isLoading
+      body:       
+      _isLoading
           ? const Center(child: CircularProgressIndicator())
           : Column(
               mainAxisAlignment: MainAxisAlignment.center,

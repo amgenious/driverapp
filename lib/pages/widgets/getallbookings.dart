@@ -1,10 +1,13 @@
 // ignore_for_file: avoid_print, unused_import
 
+import 'package:driver_app/ui/bookingsskeleton.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
+
+import 'package:shimmer/shimmer.dart';
 
 class GetAllBookings extends StatefulWidget {
   const GetAllBookings({super.key});
@@ -82,8 +85,23 @@ class _GetAllBookingsState extends State<GetAllBookings> {
 
   @override
   Widget build(BuildContext context) {
-    return _isLoading
-        ? const Center(child: CircularProgressIndicator())
+    return 
+    _isLoading
+        ? Column(
+          children: [
+            SizedBox(
+              child: Shimmer(gradient:LinearGradient(  
+                colors: [
+              Colors.amber.shade900,
+              Colors.amber.shade700,
+              Colors.amber.shade500,
+              Colors.amber.shade300,
+              Colors.amber.shade100,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,), child: const BookingsSkeleton()),
+            )
+          ],)
         : Column(
             children: [
               const Text("Passengers Booked"),

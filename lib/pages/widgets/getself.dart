@@ -3,6 +3,7 @@
 import 'package:driver_app/pages/mainscreens/endtrippage.dart';
 import 'package:driver_app/pages/mainscreens/goonline.dart';
 import 'package:driver_app/pages/mainscreens/tripspage.dart';
+import 'package:driver_app/ui/homepageskeleton.dart';
 import 'package:driver_app/utilis/constant.dart';
 import 'package:driver_app/wrapper/wrapper.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
+import 'package:shimmer/shimmer.dart';
 
 class GetProfilePage extends StatefulWidget {
   const GetProfilePage({super.key});
@@ -195,7 +197,21 @@ class _GetProfilePageState extends State<GetProfilePage> {
     thumbnailUrl = pro?[0]['Thumbnail']['URL'];
     var size = MediaQuery.of(context).size;
     return _isLoading
-        ? const Center(child: CircularProgressIndicator())
+        ? Center(
+              child:
+              SizedBox(
+                child: Shimmer(gradient:LinearGradient(  
+                colors: [
+              Colors.amber.shade900,
+              Colors.amber.shade700,
+              Colors.amber.shade500,
+              Colors.amber.shade300,
+              Colors.amber.shade100,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,), child:const HomePageSkeleton()),
+              )
+            )
         : Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

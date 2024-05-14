@@ -2,11 +2,14 @@
 
 import 'package:driver_app/pages/mainscreens/addprofilepicture.dart';
 import 'package:driver_app/pages/mainscreens/notificationpage.dart';
+import 'package:driver_app/ui/profileskeleton.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
+
+import 'package:shimmer/shimmer.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -118,7 +121,19 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           ),
           _isLoading
-              ? const Center(child: CircularProgressIndicator())
+              ? Center(
+                child: 
+                Shimmer(gradient:LinearGradient(  
+                colors: [
+              Colors.grey.shade900,
+              Colors.grey.shade700,
+              Colors.grey.shade500,
+              Colors.grey.shade300,
+              Colors.grey.shade100,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,), child: const ProfileSkeleton())
+                )
               : Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
