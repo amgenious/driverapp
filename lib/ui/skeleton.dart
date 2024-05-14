@@ -10,9 +10,9 @@ class SkeletonPlaceholder extends StatelessWidget {
       height: height,
       width: width,
       padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(209, 158, 158, 158),
-        borderRadius: const BorderRadius.all(Radius.circular(8))
+      decoration: const BoxDecoration(
+        color: Color.fromARGB(209, 158, 158, 158),
+        borderRadius: BorderRadius.all(Radius.circular(8))
       ),
     );
   }
